@@ -1,0 +1,190 @@
+/* General: reset y estilo base */
+html, body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    color: #1E2838;
+    height: 100%;
+
+    background-size: 300% 300%;
+    height: 100vh;
+    background-color:#ffffff;
+    background-color:#e4e4e4;background-image: radial-gradient(at 97% 97%, rgb(255, 255, 255) 0, transparent 47%), radial-gradient(at 1% 86%, rgb(255, 255, 255) 0, transparent 42%), radial-gradient(at 63% 9%, hsla(197,100%,64%,1) 0, transparent 50%), radial-gradient(at 34% 44%, hsla(52,76%,76%,1) 0, transparent 44%), radial-gradient(at 92% 54%, hsla(313,100%,62%,1) 0, transparent 50%), radial-gradient(at 89% 15%, hsla(125,100%,56%,1) 0, transparent 50%), radial-gradient(at 1% 0%, hsla(291,85%,93%,1) 0, transparent 50%), radial-gradient(at 49% 78%, hsla(308,100%,90%,1) 0, transparent 50%);
+    animation: gradient 30s linear infinite;
+}
+
+@keyframes gradient {
+    0% {
+        background-position: 0% 0%;
+    }
+    50% {
+        background-position: 100% 100%;
+    }
+    100% {
+        background-position: 0% 0%;
+    }
+}
+    
+
+/* Menú fijo */
+.menu {
+    /*position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;*/
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    padding: 40px 20px 20px 20px;
+}
+
+.menu svg {
+    width: 40px;
+    cursor: pointer;
+}
+
+.menu svg .cls-1 {
+    fill: #1E2838; /* Cambia esto al color deseado */
+}
+
+/* Contenido principal */
+main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /*min-height: 100vh;*/
+    margin-top: 40px;
+    box-sizing: border-box;
+}
+
+/* Título principal */
+.main-title {
+    text-align: center;
+    font-family: "Orbitron", serif;
+    font-optical-sizing: auto;
+    font-weight: 900;
+    color: #1E2838;
+}
+
+.main-title h1 {
+    font-size: 40px;
+    color: #1E2838;
+}
+
+/* Formulario: input y botón juntos */
+.form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+    border-radius: 20px;
+    overflow: hidden;
+    margin: 20px auto;
+    max-width: 700px;
+    width: 100%;
+    font-family: 'Varela', 'Lexend', 'Poppins', Arial, sans-serif;
+
+}
+
+section.form-section {
+    width: 700px;
+}
+
+/* Input estilizado */
+.form-container input[type="url"] {
+    flex: 1;
+    padding: 15px 20px;
+    font-size: 35px;
+    font-size: 16px;
+    border: none;
+    outline: none;
+    background-color: #FFFFFF;
+    color: #1E2838;
+    font-weight: 500;
+    font-family: 'Varela', 'Lexend', 'Poppins', Arial, sans-serif;
+
+
+}
+
+/* Botón estilizado */
+.form-container button {
+    padding: 30px 30px;
+    border-radius: 20px;
+    font-size: 20px;
+    color: #fff;
+    background-color: #1F2937;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 6px solid;
+    border-color: #fff;
+    width: 250px;
+    font-weight: 400!important;
+    font-family: 'Varela', 'Lexend', 'Poppins', Arial, sans-serif;
+
+
+}
+
+.form-container button:hover {
+    background-color: #0f141b;
+    transform: scale(1.02);
+    font-weight: 400!important;
+    font-family: 'Varela', 'Lexend', 'Poppins', Arial, sans-serif;
+
+
+}
+
+input#tiktok_url {
+    font-size: 20px;
+    font-weight: 500;
+    font-family: 'Varela', 'Lexend', 'Poppins', Arial, sans-serif;
+
+}
+
+input::placeholder {
+    font-weight: 400!important;
+    font-family: 'Varela', 'Lexend', 'Poppins', Arial, sans-serif;
+
+}
+
+
+/* Mensaje de carga */
+#loading {
+    font-size: 20px;
+    color: #0f141b;
+    display: none;
+    margin-top: 20px;
+    font-family: 'Varela', 'Lexend', 'Poppins', Arial, sans-serif;
+    text-align: center;
+
+    }
+    
+
+/* Resultados */
+#result {
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 20px;
+    color: #1E2838;
+    text-align: center;
+    background-color: #fff;
+}
+
+
+
+/* Footer */
+.site-footer {
+    text-align: center; /* Centra el texto */
+    margin-top: 20px; /* Espacio superior */
+    padding: 10px 0; /* Espaciado interno */
+    color: #757575; /* Texto blanco */
+    font-family: 'Varela', 'Lexend', 'Poppins', Arial, sans-serif;
+    font-size: 14px;
+}
+
+.site-footer p {
+    margin: 0; /* Eliminar margen por defecto */
+}
