@@ -8,7 +8,7 @@ import pyktok as pyk
 # Configuración de Flask
 app = Flask(__name__)
 
-# Define las carpetas
+# Define carpetas
 BASE_DIR = os.path.abspath(".")
 METADATA_DIR = os.path.join(BASE_DIR, "metadata")
 MP3_DIR = os.path.join(BASE_DIR, "mp3")
@@ -21,9 +21,7 @@ os.makedirs(MP3_DIR, exist_ok=True)
 model = whisper.load_model("base")
 
 def transcribe_audio(audio_path):
-    """
-    Transcribe un archivo de audio utilizando Whisper.
-    """
+    """Transcribe un archivo de audio usando Whisper."""
     try:
         result = model.transcribe(audio_path, fp16=False)
         return result["text"]
@@ -39,21 +37,23 @@ def index():
 @app.route("/process", methods=["POST"])
 def process_video():
     """Procesa el video de TikTok y devuelve la transcripción."""
+    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+    metadata_path = os.path.join(METADATA_DIR, f"video_metadata_{timestamp}.csv")
+    audio_filename = os.path.join(MP3_DIR, f"tiktok_audio_{timestamp}.mp3")
+    transcription_filename = os.path.join(MP3_DIR, f"tiktok_transcription_{timestamp}.txt")
+    new_video_filename = f"tiktok_video_{timestamp}.mp4"
+
     try:
-        # Obtener el enlace del formulario
+        # Obtener URL de TikTok
         tiktok_url = request.form.get("tiktok_url")
         if not tiktok_url:
             return jsonify({"error": "No se proporcionó un enlace de TikTok"}), 400
 
-        # Obtener la fecha y hora actual
-        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-
-        # Descargar el video
-        metadata_path = os.path.join(METADATA_DIR, f"video_metadata_{timestamp}.csv")
+        # Descargar video
         pyk.specify_browser('chrome')
         pyk.save_tiktok(tiktok_url, save_video=True, metadata_fn=metadata_path)
 
-        # Buscar el archivo de video descargado
+        # Buscar video descargado
         video_filename = None
         for file in os.listdir("."):
             if file.endswith(".mp4"):
@@ -63,38 +63,39 @@ def process_video():
         if not video_filename:
             return jsonify({"error": "No se encontró el archivo de video descargado"}), 500
 
-        # Renombrar el archivo de video
-        new_video_filename = f"tiktok_video_{timestamp}.mp4"
         os.rename(video_filename, new_video_filename)
 
-        # Extraer el audio del video
-        audio_filename = os.path.join(MP3_DIR, f"tiktok_audio_{timestamp}.mp3")
+        # Extraer audio con ffmpeg
         command = [
             "ffmpeg",
             "-i", new_video_filename,
-            "-q:a", "0",  # Máxima calidad de audio
-            "-map", "a",  # Extraer solo la pista de audio
+            "-q:a", "0",
+            "-map", "a",
             audio_filename
         ]
         subprocess.run(command, check=True)
 
-        # Transcribir el audio
+        # Transcripción
         transcription = transcribe_audio(audio_filename)
 
-        # Guardar la transcripción
-        transcription_filename = os.path.join(MP3_DIR, f"tiktok_transcription_{timestamp}.txt")
+        if not transcription:
+            return jsonify({"error": "No se pudo transcribir el audio"}), 500
+
+        # Guardar transcripción si quieres mantenerla
         with open(transcription_filename, "w", encoding="utf-8") as f:
             f.write(transcription)
 
-        # Eliminar el video original
-        os.remove(new_video_filename)
-
-        # Devolver la transcripción como respuesta
         return jsonify({"transcription": transcription})
 
     except Exception as e:
         print(f"Error al procesar el video: {e}")
         return jsonify({"error": f"Error al procesar el video: {str(e)}"}), 500
+
+    finally:
+        # Eliminar archivos temporales
+        for path in [new_video_filename, audio_filename, transcription_filename, metadata_path]:
+            if os.path.exists(path):
+                os.remove(path)
 
 if __name__ == "__main__":
     app.run(debug=True)
