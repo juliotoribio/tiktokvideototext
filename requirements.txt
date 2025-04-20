@@ -1,5 +1,9 @@
 Flask
-whisper
+Flask
+pyktok
+torch
+gunicorn
+git+https://github.com/openai/whisper.git
 pyktok
 torch
 gunicorn
