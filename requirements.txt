@@ -1,0 +1,5 @@
+Flask
+whisper
+pyktok
+torch
+gunicorn
